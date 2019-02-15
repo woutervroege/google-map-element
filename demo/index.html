@@ -30,7 +30,6 @@
       <demo-snippet>
         <template>
           <google-map
-            api-key=""
             id="map"
             latitude="52.3680"
             longitude="4.9036"
@@ -38,6 +37,11 @@
             disable-default-ui
             zoom-control
           ></google-map>
+
+          <script>
+            var apiKey = window.prompt('Please fill in your Google Maps API Key');
+            map.apiKey = apiKey;
+          </script>
 
         </template>
       </demo-snippet>

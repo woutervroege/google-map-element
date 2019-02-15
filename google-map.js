@@ -105,11 +105,11 @@ class GoogleMap extends LitElement {
     this.fullscreenControl = undefined;
     this.gestureHandling = 'auto';
     this.styles = [];
-    this.updateComplete.then(this._loadScript.bind(this));
   }
 
   updated(props) {
     super.updated();
+    if(props.has('apiKey') && !!this.apiKey) this._loadScript();
     this._updateMap();
   }
 
