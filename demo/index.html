@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>google-map demo</title>
+
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+    <script type="module">
+      import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
+      import '@polymer/iron-demo-helpers/demo-snippet';
+    </script>
+
+    <script type="module" src="../google-map.js"></script>
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+        google-map {
+          height: 400px;
+          width: 100%;
+        }
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic google-map demo</h3>
+      <demo-snippet>
+        <template>
+          <google-map
+            api-key=""
+            id="map"
+            latitude="52.3680"
+            longitude="4.9036"
+            zoom="7"
+            disable-default-ui
+            zoom-control
+          ></google-map>
+
+        </template>
+      </demo-snippet>
+
+    </div>
+  </body>
+</html>
