@@ -153,6 +153,12 @@ class GoogleMap extends LitElement {
   _updateMap() {
     if(!this._map || !this._map.setOptions || !this._idle) return;
     this._map.setOptions(this.options);
+  get center() {
+    return this._map ? this._map.getCenter() : null;
+  }
+
+  get bounds() {
+    return this._map ? this._map.getBounds() : null;
   }
 
   get options() {
