@@ -68,6 +68,16 @@ class GoogleMapMarker extends LitElement {
     this._map = null;
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this._marker && this._map && this._marker.setMap(this._map);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._marker && this._marker.setMap(null);
+  }
+
   updated(props) {
     if(props.has('_map') && this._map) this._mapChanged();
     if(props.has('latitude') || props.has('longitude')) this._positionChanged()

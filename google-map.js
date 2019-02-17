@@ -122,9 +122,9 @@ class GoogleMap extends LitElement {
     this.gestureHandling = 'auto';
     this.styles = [];
     window.requestAnimationFrame(() => {
+      this._setMarkers();
       var slot = this.shadowRoot.querySelector('slot');
-      this._setMarkers(slot);
-      slot.addEventListener('slotchange', () => this._setMarkers(slot));
+      slot.addEventListener('slotchange', this._handleSlotChange.bind(this));
     })
   }
 
@@ -134,8 +134,13 @@ class GoogleMap extends LitElement {
     this._updateMap(props);
   }
 
-  _setMarkers(slot) {
+  _handleSlotChange(evt) {
+    this._setMarkers();
+  }
+
+  _setMarkers() {
     if(!this._map) return;
+    var slot = this.shadowRoot.querySelector('slot');
     var markers = slot.assignedNodes().filter((item) => item.nodeName === 'GOOGLE-MAP-MARKER');
     markers.map((marker) => marker._map = this._map);
   }
