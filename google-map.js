@@ -121,6 +121,11 @@ class GoogleMap extends LitElement {
     this.fullscreenControl = undefined;
     this.gestureHandling = 'auto';
     this.styles = [];
+    window.requestAnimationFrame(() => {
+      var slot = this.shadowRoot.querySelector('slot');
+      this._setMarkers(slot);
+      slot.addEventListener('slotchange', () => this._setMarkers(slot));
+    })
   }
 
   updated(props) {
@@ -129,6 +134,10 @@ class GoogleMap extends LitElement {
     this._updateMap(props);
   }
 
+  _setMarkers(slot) {
+    if(!this._map) return;
+    var markers = slot.assignedNodes().filter((item) => item.nodeName === 'GOOGLE-MAP-MARKER');
+    markers.map((marker) => marker._map = this._map);
   }
 
   _loadScript() {
@@ -150,6 +159,7 @@ class GoogleMap extends LitElement {
     this._map.addListener('bounds_changed', this._fireChangeEvent.bind(this, 'bounds'));
     this._map.addListener('dragstart', this._handleDragstart.bind(this));
     this._map.addListener('maptypeid_changed', this._handleMapTypeIdChanged.bind(this));
+    this._setMarkers(this.shadowRoot.querySelector('slot'));
   }
 
   _updateMap(props) {
@@ -244,6 +254,7 @@ class GoogleMap extends LitElement {
         }
       </style>
       <section id="map"></section>
+      <slot></slot>
     `;
   }
 
