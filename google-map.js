@@ -38,6 +38,14 @@ class GoogleMap extends LitElement {
         type: Number,
       },
 
+      heading: {
+        type: Number,
+      },
+
+      tilt: {
+        type: Number,
+      },
+
       disableDefaultUI: {
         type: Boolean,
         attribute: 'disable-default-ui'
@@ -46,6 +54,11 @@ class GoogleMap extends LitElement {
       zoomControl: {
         type: Boolean,
         attribute: 'zoom-control'
+      },
+
+      mapTypeId: {
+        type: String,
+        attribute: 'map-type-id'
       },
 
       mapTypeControl: {
@@ -96,8 +109,11 @@ class GoogleMap extends LitElement {
     this.maxZoom = null;
     this.latitude = 52.3680;
     this.longitude = 4.9036;
+    this.heading = 0;
+    this.tilt = 0;
     this.disableDefaultUI = false;
     this.zoomControl = undefined;
+    this.mapTypeId = 'roadmap';
     this.mapTypeControl = undefined;
     this.scaleControl = undefined;
     this.streetViewControl = undefined;
@@ -119,7 +135,7 @@ class GoogleMap extends LitElement {
     script.src = 'https://maps.googleapis.com/maps/api/js?' + (this.apiKey ? `key=${this.apiKey}` : '');
     script.async = true;
     script.defer = true;
-    script.onload = this._initMap.bind(this);
+    script.onload = this._initMap.bind(this, props);
     document.head.appendChild(script);
   }
 
@@ -131,6 +147,7 @@ class GoogleMap extends LitElement {
     this._map.addListener('center_changed', this._handleCenterChanged.bind(this));
     this._map.addListener('zoom_changed', this._handleZoomChanged.bind(this));
     this._map.addListener('dragstart', this._handleDragstart.bind(this));
+    this._map.addListener('maptypeid_changed', this._handleMapTypeIdChanged.bind(this));
   }
 
   _updateMap() {
@@ -144,8 +161,11 @@ class GoogleMap extends LitElement {
       zoom: this.zoom,
       minZoom: this.minZoom,
       maxZoom: this.maxZoom,
+      heading: this.heading,
+      tilt: this.tilt,
       disableDefaultUI: this.disableDefaultUI,
       zoomControl: this.zoomControl,
+      mapTypeId: this.mapTypeId,
       mapTypeControl: this.mapTypeControl,
       scaleControl: this.scaleControl,
       streetViewControl: this.streetViewControl,
@@ -181,6 +201,9 @@ class GoogleMap extends LitElement {
       composed: true,
       bubbles: true
     }))
+  _handleMapTypeIdChanged() {
+    this.mapTypeId = this._map.mapTypeId;
+  }
   }
 
   render() {
