@@ -146,13 +146,35 @@ class GoogleMap extends LitElement {
     this._map.addListener('idle', this._handleIdle.bind(this));
     this._map.addListener('center_changed', this._handleCenterChanged.bind(this));
     this._map.addListener('zoom_changed', this._handleZoomChanged.bind(this));
+    this._map.addListener('bounds_changed', this._fireChangeEvent.bind(this, 'bounds'));
     this._map.addListener('dragstart', this._handleDragstart.bind(this));
     this._map.addListener('maptypeid_changed', this._handleMapTypeIdChanged.bind(this));
   }
 
-  _updateMap() {
+  _updateMap(props) {
+    var options = {};
+    props.forEach((item, propName) => {
+      if(propName) options[propName] = this[propName];
+      this._fireChangeEvent(propName);
+    })
+
+    if(props.has('latitude') || props.has('longitude')) {
+      options.center = {lat: this.latitude, lng: this.longitude};
+      delete options.latitude;
+      delete options.longitude;
+    }
+
     if(!this._map || !this._map.setOptions || !this._idle) return;
-    this._map.setOptions(this.options);
+    this._map.setOptions(options);
+  }
+
+  _fireChangeEvent(propName) {
+    this.dispatchEvent(new CustomEvent(`${this._camelCaseToDash(propName)}-changed`, {
+      detail: { value: this[propName] },
+      composed: true,
+    }))
+  }
+
   get center() {
     return this._map ? this._map.getCenter() : null;
   }
@@ -192,24 +214,20 @@ class GoogleMap extends LitElement {
 
   _handleZoomChanged() {
     this.zoom = this._map.zoom;
-    this.dispatchEvent(new CustomEvent('zoomchanged', {
-      detail: { value: this.zoom },
-      composed: true,
-      bubbles: true
-    }))
   }
 
   _handleCenterChanged() {
-    this.latitude = this._map.center.lat();
-    this.longitude = this._map.center.lng();
-    this.dispatchEvent(new CustomEvent('centerchanged', {
-      detail: { latitude: this.latitude, longitude: this.longitude },
-      composed: true,
-      bubbles: true
-    }))
+    this.latitude = this.center.lat();
+    this.longitude = this.center.lng();
+    this._fireChangeEvent('center');
+  }
+
   _handleMapTypeIdChanged() {
     this.mapTypeId = this._map.mapTypeId;
   }
+
+  _camelCaseToDash( myStr ) {
+    return myStr.replace( /([a-z])([A-Z])/g, '$1-$2' ).toLowerCase();
   }
 
   render() {
