@@ -51,6 +51,10 @@ class GoogleMapMarker extends LitElement {
 
       _marker: {
         type: Object
+      },
+
+      _idle: {
+        type: Boolean
       }
 
     };
@@ -66,6 +70,7 @@ class GoogleMapMarker extends LitElement {
     this.draggable = false;
     this.open = false;
     this._map = null;
+    this._idle = true;
   }
 
   connectedCallback() {
