@@ -126,8 +126,9 @@ class GoogleMap extends LitElement {
   updated(props) {
     super.updated();
     if(props.has('apiKey') && !!this.apiKey) this._loadScript();
-    if(!this._idle) return;
-    this._updateMap();
+    this._updateMap(props);
+  }
+
   }
 
   _loadScript() {
@@ -135,7 +136,7 @@ class GoogleMap extends LitElement {
     script.src = 'https://maps.googleapis.com/maps/api/js?' + (this.apiKey ? `key=${this.apiKey}` : '');
     script.async = true;
     script.defer = true;
-    script.onload = this._initMap.bind(this, props);
+    script.onload = this._initMap.bind(this);
     document.head.appendChild(script);
   }
 
