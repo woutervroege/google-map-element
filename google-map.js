@@ -260,7 +260,7 @@ class GoogleMap extends LitElement {
         }
 
         #map {
-          height: 100%;
+          min-height: 100%;
           width: 100%;
         }
       </style>
