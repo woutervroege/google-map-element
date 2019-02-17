@@ -207,8 +207,8 @@ class GoogleMap extends LitElement {
 
   get options() {
     return {
-      center: {lat: this.latitude, lng: this.longitude},
-      zoom: this.zoom,
+      center: {lat: this.latitude || 52.3680, lng: this.longitude || 4.9036},
+      zoom: this.zoom || 10,
       minZoom: this.minZoom,
       maxZoom: this.maxZoom,
       heading: this.heading,
