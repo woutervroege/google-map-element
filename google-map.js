@@ -121,17 +121,23 @@ class GoogleMap extends LitElement {
     this.fullscreenControl = undefined;
     this.gestureHandling = 'auto';
     this.styles = [];
-    window.requestAnimationFrame(() => {
-      this._setMarkers();
-      var slot = this.shadowRoot.querySelector('slot');
-      slot.addEventListener('slotchange', this._handleSlotChange.bind(this));
-    })
+    this.updateComplete.then(this._initSlot.bind(this));
+  }
+
+  disconnectedCallback() {
+    super.connectedCallback();
+    slot.removeEventListener('slotchange', this._handleSlotChange.bind(this));
   }
 
   updated(props) {
     super.updated();
     if(props.has('apiKey') && !!this.apiKey) this._loadScript();
     this._updateMap(props);
+  }
+
+  _initSlot() {
+    var slot = this.shadowRoot.querySelector('slot');
+    slot.addEventListener('slotchange', this._handleSlotChange.bind(this));
   }
 
   _handleSlotChange(evt) {
