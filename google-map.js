@@ -153,6 +153,7 @@ class GoogleMap extends LitElement {
   }
 
   _loadScript() {
+    if(window.google && window.google.maps) return;
     const script = document.createElement('script');
     script.src = 'https://maps.googleapis.com/maps/api/js?' + (this.apiKey ? `key=${this.apiKey}` : '');
     script.async = true;
