@@ -126,6 +126,7 @@ class GoogleMap extends LitElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    var slot = this.shadowRoot.querySelector('slot');
     slot.removeEventListener('slotchange', this._handleSlotChange.bind(this));
   }
 
