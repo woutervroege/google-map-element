@@ -136,6 +136,10 @@ class GoogleMap extends LitElement {
     this._updateMap(props);
   }
 
+  firstUpdated(props) {
+    if(!this._map && window.google && window.google.maps) this._initMap();
+  }
+
   _initSlot() {
     var slot = this.shadowRoot.querySelector('slot');
     slot.addEventListener('slotchange', this._handleSlotChange.bind(this));
