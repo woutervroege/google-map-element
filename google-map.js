@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html, css } from 'lit-element';
 
 /**
  * `google-map`
@@ -254,18 +254,21 @@ class GoogleMap extends LitElement {
     return myStr.replace( /([a-z])([A-Z])/g, '$1-$2' ).toLowerCase();
   }
 
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+      }
+
+      #map {
+        min-height: 100%;
+        width: 100%;
+      }
+    `
+  }
+
   render() {
     return html`
-      <style>
-        :host {
-          display: block;
-        }
-
-        #map {
-          min-height: 100%;
-          width: 100%;
-        }
-      </style>
       <section id="map"></section>
       <slot></slot>
     `;
