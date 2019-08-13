@@ -124,6 +124,13 @@ class GoogleMap extends LitElement {
     this.updateComplete.then(this._initSlot.bind(this));
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    window.requestAnimationFrame(() => {
+      if(!this._map && window.google && window.google.maps) this._initMap();
+    })
+  }
+
   disconnectedCallback() {
     super.disconnectedCallback();
     var slot = this.shadowRoot.querySelector('slot');
