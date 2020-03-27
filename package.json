@@ -1,6 +1,15 @@
 {
   "name": "google-map-element",
   "main": "google-map-element.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woutervroege/google-map-element.git"
+  },
+  "author": "Wouter Vroege",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/woutervroege/google-map-element/issues"
+  },
   "dependencies": {
     "lit-element": "^2.0.1"
   },
