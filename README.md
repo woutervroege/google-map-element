@@ -1,4 +1,4 @@
-# \<google-map\>
+# \<google-map-element\>
 
 
 

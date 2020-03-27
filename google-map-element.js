@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit-element';
 
 /**
- * `google-map`
+ * `google-map-element`
  * 
  *
  * @customElement
@@ -128,12 +128,13 @@ class GoogleMap extends LitElement {
     super.connectedCallback();
     window.requestAnimationFrame(() => {
       if(!this._map && window.google && window.google.maps) this._initMap();
-    })
+    });
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     var slot = this.shadowRoot.querySelector('slot');
+    if(!slot) return;
     slot.removeEventListener('slotchange', this._handleSlotChange.bind(this));
   }
 
@@ -148,7 +149,7 @@ class GoogleMap extends LitElement {
     slot.addEventListener('slotchange', this._handleSlotChange.bind(this));
   }
 
-  _handleSlotChange(evt) {
+  _handleSlotChange() {
     this._setMarkers();
   }
 
@@ -172,7 +173,7 @@ class GoogleMap extends LitElement {
   _initMap() {
     if(this._map) return;
 
-    this._map = new google.maps.Map(this.shadowRoot.querySelector('#map'), this.options);
+    this._map = new window.google.maps.Map(this.shadowRoot.querySelector('#map'), this.options);
     this._map.addListener('idle', this._handleIdle.bind(this));
     this._map.addListener('center_changed', this._handleCenterChanged.bind(this));
     this._map.addListener('zoom_changed', this._handleZoomChanged.bind(this));
@@ -187,7 +188,7 @@ class GoogleMap extends LitElement {
     props.forEach((item, propName) => {
       if(propName) options[propName] = this[propName];
       this._fireChangeEvent(propName);
-    })
+    });
 
     if(props.has('latitude') || props.has('longitude')) {
       options.center = {lat: this.latitude, lng: this.longitude};
@@ -203,7 +204,7 @@ class GoogleMap extends LitElement {
     this.dispatchEvent(new CustomEvent(`${this._camelCaseToDash(propName)}-changed`, {
       detail: { value: this[propName] },
       composed: true,
-    }))
+    }));
   }
 
   get center() {
@@ -232,7 +233,7 @@ class GoogleMap extends LitElement {
       fullscreenControl: this.fullscreenControl,
       gestureHandling: this.gestureHandling,
       styles: this.styles
-    }
+    };
   }
 
   _handleDragstart() {
@@ -271,7 +272,7 @@ class GoogleMap extends LitElement {
         min-height: 100%;
         width: 100%;
       }
-    `
+    `;
   }
 
   render() {

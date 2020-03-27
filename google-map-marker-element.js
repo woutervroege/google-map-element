@@ -1,7 +1,7 @@
 import { LitElement } from 'lit-element';
 
 /**
- * `google-map-marker`
+ * `google-map-element-marker`
  * 
  *
  * @customElement
@@ -85,21 +85,21 @@ class GoogleMapMarker extends LitElement {
 
   updated(props) {
     if(props.has('_map') && this._map) this._mapChanged();
-    if(props.has('latitude') || props.has('longitude')) this._positionChanged()
-    if(props.has('latitude')) this._fireChangeEvent('latitude')
-    if(props.has('longitude')) this._fireChangeEvent('longitude')
-    if(props.has('title')) this._titleChanged()
-    if(props.has('label')) this._labelChanged()
-    if(props.has('info')) this._infoChanged()
-    if(props.has('draggable')) this._draggableChanged()
-    if(props.has('animation')) this._animationChanged()
-    if(props.has('open')) this._openChanged()
-    if(props.has('hidden')) this._hiddenChanged()
+    if(props.has('latitude') || props.has('longitude')) this._positionChanged();
+    if(props.has('latitude')) this._fireChangeEvent('latitude');
+    if(props.has('longitude')) this._fireChangeEvent('longitude');
+    if(props.has('title')) this._titleChanged();
+    if(props.has('label')) this._labelChanged();
+    if(props.has('info')) this._infoChanged();
+    if(props.has('draggable')) this._draggableChanged();
+    if(props.has('animation')) this._animationChanged();
+    if(props.has('open')) this._openChanged();
+    if(props.has('hidden')) this._hiddenChanged();
   }
 
   _mapChanged() {
-    this._marker = new google.maps.Marker({
-      position: new google.maps.LatLng(this.latitude, this.longitude),
+    this._marker = new window.google.maps.Marker({
+      position: new window.google.maps.LatLng(this.latitude, this.longitude),
       title: this.title,
       label: this.label,
       draggable: this.draggable,
@@ -114,7 +114,7 @@ class GoogleMapMarker extends LitElement {
 
   _positionChanged() {
     if (this._marker && this.latitude != null && this.longitude != null && this._idle) {
-      this._marker.setPosition(new google.maps.LatLng(parseFloat(this.latitude), parseFloat(this.longitude)));
+      this._marker.setPosition(new window.google.maps.LatLng(parseFloat(this.latitude), parseFloat(this.longitude)));
     }
   }
 
@@ -131,16 +131,16 @@ class GoogleMapMarker extends LitElement {
 
     if(this.info) {
       if (!this._infoWindow) {
-        this._infoWindow = new google.maps.InfoWindow();
-        this._handleInfoOpen = google.maps.event.addListener(this._marker, 'click', () => this.open = true );
-        this._handleInfoClose = google.maps.event.addListener(this._infoWindow, 'closeclick', () => this.open = false )
+        this._infoWindow = new window.google.maps.InfoWindow();
+        this._handleInfoOpen = window.google.maps.event.addListener(this._marker, 'click', () => this.open = true );
+        this._handleInfoClose = window.google.maps.event.addListener(this._infoWindow, 'closeclick', () => this.open = false );
       }
       this._infoWindow.setContent(this.info);
     }
     else {
       if (this._infoWindow) {
-        google.maps.event.removeListener(this._handleInfoOpen);
-        google.maps.event.removeListener(this._handleInfoClose);
+        window.google.maps.event.removeListener(this._handleInfoOpen);
+        window.google.maps.event.removeListener(this._handleInfoClose);
         this._infoWindow = null;
       }
     }
@@ -166,7 +166,7 @@ class GoogleMapMarker extends LitElement {
     this.dispatchEvent(new CustomEvent(`${this._camelCaseToDash(propName)}-changed`, {
       detail: { value: this[propName] },
       composed: true,
-    }))
+    }));
   }
 
   _camelCaseToDash( myStr ) {
@@ -181,7 +181,7 @@ class GoogleMapMarker extends LitElement {
     this._idle = true;
   }
 
-  _handlePositionChanged(evt) {
+  _handlePositionChanged() {
     this.latitude = this._marker.position.lat();
     this.longitude = this._marker.position.lng();
   }
