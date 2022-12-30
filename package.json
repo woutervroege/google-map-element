@@ -20,7 +20,7 @@
     "mocha": "^5.2.0",
     "wct-mocha": "^1.0.0",
     "husky": "^3.0.9",
-    "release-it": "^13.3.2"
+    "release-it": "^13.7.2"
   },
   "scripts": {
     "lint:eslint": "eslint --ext .js . --ignore-path .gitignore",
